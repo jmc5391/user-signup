@@ -38,17 +38,17 @@ def index():
         verify_error = 'Please re-enter the password'
 
     if email:
-        if '@' not in email or '.' not in email or len(email) > 20 or len(email) < 3:
+        if '@' not in email or '.' not in email or ' ' in email or email.count('@') > 1 or email.count('.') > 1  or len(email) > 20 or len(email) < 3:
             email_error = 'Please enter a valid email address between 3 and 20 characters long.'
 
     if not username_error and not password_error and not verify_error and not email_error:
-        return redirect('/welcome?username={0}'.format(username))
+        return render_template('welcome.html', username=username)
     else:
         return render_template('user_signup.html', username_error = username_error, password_error = password_error, verify_error = verify_error, email_error = email_error, username = username, email = email)
 
-@app.route('/welcome')
-def signup():
-    username = request.arg.get('username')
-    return render_template('welcome.html', username=username, title='Thank You!')
+#@app.route('/welcome', methods=['POST'])
+#def signup():
+#    username = request.post('username')
+#    return render_template('welcome.html', username=username, title='Thank You!')
 
 app.run()
